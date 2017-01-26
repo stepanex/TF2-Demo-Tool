@@ -16,6 +16,7 @@ namespace TF2_Demo_Tool
         string splitter;
         string path1;
         string path2;
+        int Number=0;
         string[] FilePaths;
 
         public Form1()
@@ -84,11 +85,14 @@ namespace TF2_Demo_Tool
                 }
                 catch (Exception)
                 {
+                    Number++;
                     File.Delete(splitter + nameofFile + ".json");
                     File.Delete(splitter + nameofFile + ".dem");
                     File.Delete(splitter + nameofFile + ".tga");
                 }
             }
+            MessageBox.Show(Number.ToString() + " files were successfully removed");
+            Number = 0;
             Import(path1);
         }
 
@@ -117,9 +121,12 @@ namespace TF2_Demo_Tool
                             {
                                 File.Move(splitter + nameofFile + ".tga", path2 + @"\" + nameofFile + ".tga");
                             } catch (Exception) { }
+                            Number++;
                         }
                     }
+                    MessageBox.Show(Number.ToString() + " files were successfully moved");
                     Import(path1);
+                    Number = 0;
                 }
             }
         }
