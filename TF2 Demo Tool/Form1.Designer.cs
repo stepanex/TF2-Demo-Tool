@@ -38,7 +38,8 @@
             // 
             // ButtonChooseFolder
             // 
-            this.ButtonChooseFolder.Location = new System.Drawing.Point(271, 12);
+            this.ButtonChooseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonChooseFolder.Location = new System.Drawing.Point(418, 191);
             this.ButtonChooseFolder.Name = "ButtonChooseFolder";
             this.ButtonChooseFolder.Size = new System.Drawing.Size(176, 23);
             this.ButtonChooseFolder.TabIndex = 2;
@@ -48,26 +49,32 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 191);
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox1.Location = new System.Drawing.Point(12, 12);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(466, 301);
+            this.richTextBox1.Size = new System.Drawing.Size(382, 337);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(403, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(214, 173);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // ButtonRemoveEmpty
             // 
+            this.ButtonRemoveEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonRemoveEmpty.Enabled = false;
-            this.ButtonRemoveEmpty.Location = new System.Drawing.Point(271, 107);
+            this.ButtonRemoveEmpty.Location = new System.Drawing.Point(418, 286);
             this.ButtonRemoveEmpty.Name = "ButtonRemoveEmpty";
             this.ButtonRemoveEmpty.Size = new System.Drawing.Size(176, 23);
             this.ButtonRemoveEmpty.TabIndex = 5;
@@ -77,8 +84,9 @@
             // 
             // ButtonMoveBookmarks
             // 
+            this.ButtonMoveBookmarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonMoveBookmarks.Enabled = false;
-            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(271, 147);
+            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(418, 326);
             this.ButtonMoveBookmarks.Name = "ButtonMoveBookmarks";
             this.ButtonMoveBookmarks.Size = new System.Drawing.Size(176, 23);
             this.ButtonMoveBookmarks.TabIndex = 6;
@@ -90,15 +98,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(490, 504);
+            this.ClientSize = new System.Drawing.Size(629, 364);
             this.Controls.Add(this.ButtonMoveBookmarks);
             this.Controls.Add(this.ButtonRemoveEmpty);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.ButtonChooseFolder);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(385, 300);
             this.Name = "Form1";
-            this.Text = "Stepanex\'s tool to organize demos";
+            this.Text = "Stepanex\'s tool to organize demos v1.1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
