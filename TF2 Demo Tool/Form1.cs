@@ -15,10 +15,12 @@ namespace TF2_Demo_Tool
 {
     public partial class Form1 : Form
     {
+        int Number = 0;
         string splitter;
-        string path1;
-        string path2;
-        int Number=0;
+        string PathDemoFiles;
+        string PathMoveTo;
+        string PathMoveToBackup = null;
+        string SaveFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).ToString() + @"\TF2DemoTool\";
         string[] FilePaths;
 
         public Form1()
@@ -28,6 +30,26 @@ namespace TF2_Demo_Tool
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            System.IO.Directory.CreateDirectory(SaveFolder);
+            flowLayoutPanel1.Controls.Clear();
+
+            try
+            {
+                string savePath = SaveFolder + "FolderDemos" + ".txt";
+                PathDemoFiles = File.ReadLines(savePath).First();
+                Import(PathDemoFiles);
+                ButtonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarks.Enabled = true;
+            }
+            catch (Exception) { }
+            try
+            {
+                string savePath = SaveFolder + "FolderMoveTo" + ".txt";
+                PathMoveToBackup = File.ReadLines(savePath).First();
+            }
+            catch (Exception){ }
+
+
         }
         
         void Import(string path)
@@ -96,8 +118,8 @@ namespace TF2_Demo_Tool
             DialogResult result = fbd.ShowDialog();
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
-                path1 = fbd.SelectedPath;
-                Import(path1);
+                PathDemoFiles = fbd.SelectedPath;
+                Import(PathDemoFiles);
                 ButtonRemoveEmpty.Enabled = true;
                 ButtonMoveBookmarks.Enabled = true;
             }
@@ -126,46 +148,137 @@ namespace TF2_Demo_Tool
                 }
                 MessageBox.Show(Number.ToString() + " files were successfully removed");
                 Number = 0;
-                Import(path1); 
+                Import(PathDemoFiles); 
             }
         }
 
         private void ButtonMoveBookmarks_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose a folder where you want to move demo files with some events on them";
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            if (PathMoveToBackup == null)
             {
-                path2 = fbd.SelectedPath;
+                var fbd = new FolderBrowserDialog();
+                fbd.Description = "Choose a folder where you want to move demo files with some events on them";
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    PathMoveTo = fbd.SelectedPath;
+                    for (int i = 0; i < FilePaths.Length; i++)
+                    {
+                        String TextInJson = File.ReadAllText(FilePaths[i]);
+                        string nameofFile = FilePaths[i].Split(new string[] { splitter }, StringSplitOptions.None)[1].Split('.')[0];
+                        string[] splitted = TextInJson.Split('"');
+
+                        if (splitted.Length > 3)
+                        {
+                            File.Move(splitter + nameofFile + ".json", PathMoveTo + @"\" + nameofFile + ".json");
+                            try
+                            {
+                                File.Move(splitter + nameofFile + ".dem", PathMoveTo + @"\" + nameofFile + ".dem");
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                File.Move(splitter + nameofFile + ".tga", PathMoveTo + @"\" + nameofFile + ".tga");
+                            }
+                            catch (Exception) { }
+                            Number++;
+                        }
+                    }
+                    MessageBox.Show(Number.ToString() + " files were successfully moved");
+                    Import(PathDemoFiles);
+                    Number = 0;
+                }
+            }
+              
+            else
+            {
                 for (int i = 0; i < FilePaths.Length; i++)
                 {
                     String TextInJson = File.ReadAllText(FilePaths[i]);
                     string nameofFile = FilePaths[i].Split(new string[] { splitter }, StringSplitOptions.None)[1].Split('.')[0];
                     string[] splitted = TextInJson.Split('"');
 
-                    if(splitted.Length > 3)
+                    if (splitted.Length > 3)
                     {
-                        File.Move(splitter + nameofFile + ".json", path2 + @"\" + nameofFile + ".json");
+                        File.Move(splitter + nameofFile + ".json", PathMoveToBackup + @"\" + nameofFile + ".json");
                         try
                         {
-                            File.Move(splitter + nameofFile + ".dem", path2 + @"\" + nameofFile + ".dem");
-                        } catch (Exception){ }
+                            File.Move(splitter + nameofFile + ".dem", PathMoveToBackup + @"\" + nameofFile + ".dem");
+                        }
+                        catch (Exception) { }
                         try
                         {
-                            File.Move(splitter + nameofFile + ".tga", path2 + @"\" + nameofFile + ".tga");
-                        } catch (Exception) { }
+                            File.Move(splitter + nameofFile + ".tga", PathMoveToBackup + @"\" + nameofFile + ".tga");
+                        }
+                        catch (Exception) { }
                         Number++;
                     }
                 }
                 MessageBox.Show(Number.ToString() + " files were successfully moved");
-                Import(path1);
+                Import(PathDemoFiles);
                 Number = 0;
             }
         }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        
+        void BackupFolder(string PathToFolder, string NameofFolder)
         {
+            string savePath = SaveFolder + NameofFolder + ".txt";
+            System.IO.File.WriteAllText(savePath, PathToFolder);
         }
+
+        private void DemoFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fbd = new FolderBrowserDialog();
+            fbd.Description = "Choose a default folder where your demo files are";
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                PathDemoFiles = fbd.SelectedPath;
+                BackupFolder(PathDemoFiles, "FolderDemos");
+                Import(PathDemoFiles);
+                MessageBox.Show("Default folder with your demo files was saved and they will be automaticaly imported at the start");
+            }
+        }
+
+        private void MNoveToStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fbd = new FolderBrowserDialog();
+            fbd.Description = "Choose a default folder where you want to move demo files with some events on them";
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                PathMoveToBackup = fbd.SelectedPath;
+                BackupFolder(PathMoveToBackup, "FolderMoveTo");
+                MessageBox.Show("Default folder for moving the demo files was saved");
+            }
+        }
+
+        private void resetDefaultFoldersToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            File.Delete(SaveFolder + "FolderDemos.txt");
+            MessageBox.Show("Default folder with your demo files was reseted");
+        }
+
+        private void resetDefaultmoveToFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            File.Delete(SaveFolder + "FolderMoveTo.txt");
+            PathMoveToBackup = null;
+            MessageBox.Show("Default folder for moving the demo files was reseted");
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new Form();
+            frm.Text = "About";
+            frm.Size = new Size(350, 100);
+            frm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            RichTextBox rtx = new RichTextBox();
+            rtx.Text = Environment.NewLine + "Author: Stepanex" + Environment.NewLine + "Email: stepanex@gmx.com" + Environment.NewLine + "GitHub: https://github.com/stepanex/TF2-Demo-Tool/releases";
+            rtx.Dock = DockStyle.Fill;
+            rtx.ReadOnly = true;
+            frm.Controls.Add(rtx);
+            frm.Show();
+        }
+        
     }
 }
