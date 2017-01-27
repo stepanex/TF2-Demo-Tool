@@ -42,15 +42,16 @@
             this.resetDefaultFoldersToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.resetDefaultmoveToFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ButtonMoveBookmarksToNewFolder = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonChooseFolder
             // 
             this.ButtonChooseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonChooseFolder.Location = new System.Drawing.Point(418, 191);
+            this.ButtonChooseFolder.Location = new System.Drawing.Point(403, 191);
             this.ButtonChooseFolder.Name = "ButtonChooseFolder";
-            this.ButtonChooseFolder.Size = new System.Drawing.Size(176, 23);
+            this.ButtonChooseFolder.Size = new System.Drawing.Size(214, 23);
             this.ButtonChooseFolder.TabIndex = 2;
             this.ButtonChooseFolder.Text = "Choose folder with demos";
             this.ButtonChooseFolder.UseVisualStyleBackColor = true;
@@ -82,9 +83,9 @@
             // 
             this.ButtonRemoveEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonRemoveEmpty.Enabled = false;
-            this.ButtonRemoveEmpty.Location = new System.Drawing.Point(418, 286);
+            this.ButtonRemoveEmpty.Location = new System.Drawing.Point(403, 264);
             this.ButtonRemoveEmpty.Name = "ButtonRemoveEmpty";
-            this.ButtonRemoveEmpty.Size = new System.Drawing.Size(176, 23);
+            this.ButtonRemoveEmpty.Size = new System.Drawing.Size(214, 23);
             this.ButtonRemoveEmpty.TabIndex = 5;
             this.ButtonRemoveEmpty.Text = "Remove empty demos";
             this.ButtonRemoveEmpty.UseVisualStyleBackColor = true;
@@ -94,11 +95,11 @@
             // 
             this.ButtonMoveBookmarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonMoveBookmarks.Enabled = false;
-            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(418, 326);
+            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(403, 293);
             this.ButtonMoveBookmarks.Name = "ButtonMoveBookmarks";
-            this.ButtonMoveBookmarks.Size = new System.Drawing.Size(176, 23);
+            this.ButtonMoveBookmarks.Size = new System.Drawing.Size(214, 23);
             this.ButtonMoveBookmarks.TabIndex = 6;
-            this.ButtonMoveBookmarks.Text = "Move bookmarked demos";
+            this.ButtonMoveBookmarks.Text = "Move bookmarked demos to saved folder";
             this.ButtonMoveBookmarks.UseVisualStyleBackColor = true;
             this.ButtonMoveBookmarks.Click += new System.EventHandler(this.ButtonMoveBookmarks_Click);
             // 
@@ -165,11 +166,24 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // ButtonMoveBookmarksToNewFolder
+            // 
+            this.ButtonMoveBookmarksToNewFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonMoveBookmarksToNewFolder.Enabled = false;
+            this.ButtonMoveBookmarksToNewFolder.Location = new System.Drawing.Point(403, 322);
+            this.ButtonMoveBookmarksToNewFolder.Name = "ButtonMoveBookmarksToNewFolder";
+            this.ButtonMoveBookmarksToNewFolder.Size = new System.Drawing.Size(214, 23);
+            this.ButtonMoveBookmarksToNewFolder.TabIndex = 8;
+            this.ButtonMoveBookmarksToNewFolder.Text = "Move bookmarked demos";
+            this.ButtonMoveBookmarksToNewFolder.UseVisualStyleBackColor = true;
+            this.ButtonMoveBookmarksToNewFolder.Click += new System.EventHandler(this.ButtonMoveBookmarksToNewFolder_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(629, 364);
+            this.Controls.Add(this.ButtonMoveBookmarksToNewFolder);
             this.Controls.Add(this.ButtonMoveBookmarks);
             this.Controls.Add(this.ButtonRemoveEmpty);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -180,7 +194,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(385, 300);
             this.Name = "Form1";
-            this.Text = "Stepanex\'s tool to organize demos v1.1.0";
+            this.Text = "Stepanex\'s tool to organize demos v2.0.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -203,6 +217,7 @@
         private System.Windows.Forms.ToolStripMenuItem resetDefaultmoveToFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator resetDefaultFoldersToolStripMenuItem;
+        private System.Windows.Forms.Button ButtonMoveBookmarksToNewFolder;
     }
 }
 

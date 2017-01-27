@@ -22,6 +22,7 @@ namespace TF2_Demo_Tool
         string PathMoveToBackup = null;
         string SaveFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).ToString() + @"\TF2DemoTool\";
         string[] FilePaths;
+        bool Hermuth = false;
 
         public Form1()
         {
@@ -35,19 +36,21 @@ namespace TF2_Demo_Tool
 
             try
             {
-                string savePath = SaveFolder + "FolderDemos" + ".txt";
-                PathDemoFiles = File.ReadLines(savePath).First();
-                Import(PathDemoFiles);
-                ButtonRemoveEmpty.Enabled = true;
-                ButtonMoveBookmarks.Enabled = true;
+                string savePath = SaveFolder + "FolderMoveTo" + ".txt";
+                PathMoveToBackup = File.ReadLines(savePath).First();
+                Hermuth = true;
             }
             catch (Exception) { }
             try
             {
-                string savePath = SaveFolder + "FolderMoveTo" + ".txt";
-                PathMoveToBackup = File.ReadLines(savePath).First();
+                string savePath = SaveFolder + "FolderDemos" + ".txt";
+                PathDemoFiles = File.ReadLines(savePath).First();
+                Import(PathDemoFiles);
+                ButtonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarksToNewFolder.Enabled = true;
+                if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
             }
-            catch (Exception){ }
+            catch (Exception) { }
 
 
         }
@@ -121,7 +124,8 @@ namespace TF2_Demo_Tool
                 PathDemoFiles = fbd.SelectedPath;
                 Import(PathDemoFiles);
                 ButtonRemoveEmpty.Enabled = true;
-                ButtonMoveBookmarks.Enabled = true;
+                if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
+                ButtonMoveBookmarksToNewFolder.Enabled = true;
             }
         }
         
@@ -154,43 +158,7 @@ namespace TF2_Demo_Tool
 
         private void ButtonMoveBookmarks_Click(object sender, EventArgs e)
         {
-            if (PathMoveToBackup == null)
-            {
-                var fbd = new FolderBrowserDialog();
-                fbd.Description = "Choose a folder where you want to move demo files with some events on them";
-                DialogResult result = fbd.ShowDialog();
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                {
-                    PathMoveTo = fbd.SelectedPath;
-                    for (int i = 0; i < FilePaths.Length; i++)
-                    {
-                        String TextInJson = File.ReadAllText(FilePaths[i]);
-                        string nameofFile = FilePaths[i].Split(new string[] { splitter }, StringSplitOptions.None)[1].Split('.')[0];
-                        string[] splitted = TextInJson.Split('"');
-
-                        if (splitted.Length > 3)
-                        {
-                            File.Move(splitter + nameofFile + ".json", PathMoveTo + @"\" + nameofFile + ".json");
-                            try
-                            {
-                                File.Move(splitter + nameofFile + ".dem", PathMoveTo + @"\" + nameofFile + ".dem");
-                            }
-                            catch (Exception) { }
-                            try
-                            {
-                                File.Move(splitter + nameofFile + ".tga", PathMoveTo + @"\" + nameofFile + ".tga");
-                            }
-                            catch (Exception) { }
-                            Number++;
-                        }
-                    }
-                    MessageBox.Show(Number.ToString() + " files were successfully moved");
-                    Import(PathDemoFiles);
-                    Number = 0;
-                }
-            }
-              
-            else
+            if (PathMoveToBackup != null)
             {
                 for (int i = 0; i < FilePaths.Length; i++)
                 {
@@ -218,8 +186,45 @@ namespace TF2_Demo_Tool
                 Import(PathDemoFiles);
                 Number = 0;
             }
+            else MessageBox.Show("You have not saved any 'move-to' folder, you can do so by clicking on 'File' and then 'Choose default 'move to' folder'");
         }
-        
+
+        private void ButtonMoveBookmarksToNewFolder_Click(object sender, EventArgs e)
+        {
+            var fbd = new FolderBrowserDialog();
+            fbd.Description = "Choose a folder where you want to move demo files with some events on them";
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                PathMoveTo = fbd.SelectedPath;
+                for (int i = 0; i < FilePaths.Length; i++)
+                {
+                    String TextInJson = File.ReadAllText(FilePaths[i]);
+                    string nameofFile = FilePaths[i].Split(new string[] { splitter }, StringSplitOptions.None)[1].Split('.')[0];
+                    string[] splitted = TextInJson.Split('"');
+
+                    if (splitted.Length > 3)
+                    {
+                        File.Move(splitter + nameofFile + ".json", PathMoveTo + @"\" + nameofFile + ".json");
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".dem", PathMoveTo + @"\" + nameofFile + ".dem");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".tga", PathMoveTo + @"\" + nameofFile + ".tga");
+                        }
+                        catch (Exception) { }
+                        Number++;
+                    }
+                }
+                MessageBox.Show(Number.ToString() + " files were successfully moved");
+                Import(PathDemoFiles);
+                Number = 0;
+            }
+        }
+
         void BackupFolder(string PathToFolder, string NameofFolder)
         {
             string savePath = SaveFolder + NameofFolder + ".txt";
@@ -236,7 +241,10 @@ namespace TF2_Demo_Tool
                 PathDemoFiles = fbd.SelectedPath;
                 BackupFolder(PathDemoFiles, "FolderDemos");
                 Import(PathDemoFiles);
-                MessageBox.Show("Default folder with your demo files was saved and they will be automaticaly imported at the start");
+                ButtonRemoveEmpty.Enabled = true;
+                if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
+                ButtonMoveBookmarksToNewFolder.Enabled = true;
+                MessageBox.Show("Default folder with your demo files was saved and they will be automatically imported at the start");
             }
         }
 
@@ -249,6 +257,11 @@ namespace TF2_Demo_Tool
             {
                 PathMoveToBackup = fbd.SelectedPath;
                 BackupFolder(PathMoveToBackup, "FolderMoveTo");
+                if (flowLayoutPanel1.Controls.Count > 0)
+                {
+                    ButtonMoveBookmarks.Enabled = true; 
+                }
+                Hermuth = true;
                 MessageBox.Show("Default folder for moving the demo files was saved");
             }
         }
@@ -263,6 +276,8 @@ namespace TF2_Demo_Tool
         {
             File.Delete(SaveFolder + "FolderMoveTo.txt");
             PathMoveToBackup = null;
+            ButtonMoveBookmarks.Enabled = false;
+            Hermuth = false;
             MessageBox.Show("Default folder for moving the demo files was reseted");
         }
 
@@ -279,6 +294,6 @@ namespace TF2_Demo_Tool
             frm.Controls.Add(rtx);
             frm.Show();
         }
-        
+
     }
 }
