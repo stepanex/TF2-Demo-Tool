@@ -9,8 +9,10 @@ With this tool you can:
     
     Set default folders so you won't have to choose them every time
     
+    See basic info about .dem file (map name, ticks, player name and server name / I.P. )
+    
     Check basic info about it's creator
 
-![Alt text](http://i.imgur.com/Qr9Jc8u.png "")
+![Alt text](http://i.imgur.com/wUEgsrI.png "")
 
-![Alt text](http://i.imgur.com/df1ejw6.png "")
+![Alt text](http://i.imgur.com/mzt3SQ4.png "")
