@@ -3,9 +3,9 @@ Tool for organizing TF2 demo files
 
 With this tool you can:
 
-    Remove demo files that don't have any event logged on them
+    Remove demo files that you selected/don't have any event logged on them
     
-    Move demo files that have some event logged on them
+    Move demo files that you selected/have some event logged on them
     
     Set default folders so you won't have to choose them every time
     
@@ -13,6 +13,6 @@ With this tool you can:
     
     Check basic info about it's creator
 
-![Alt text](http://i.imgur.com/wUEgsrI.png "")
+![Alt text](http://i.imgur.com/X9Q0uHw.png "")
 
-![Alt text](http://i.imgur.com/mzt3SQ4.png "")
+![Alt text](http://i.imgur.com/VRviZZl.png "")
