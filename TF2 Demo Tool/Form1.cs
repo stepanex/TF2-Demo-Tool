@@ -21,7 +21,7 @@ namespace TF2_Demo_Tool
 {
     public partial class Form1 : Form
     {
-        int version = 300;
+        int version = 400;
         int Number = 0;
         String TextInJson;
         string splitter;
@@ -56,8 +56,13 @@ namespace TF2_Demo_Tool
                 PathDemoFiles = File.ReadLines(savePath).First();
                 splitter = PathDemoFiles;
                 Import(PathDemoFiles);
-                ButtonRemoveEmpty.Enabled = true;
+                
                 ButtonMoveBookmarksToNewFolder.Enabled = true;
+                buttonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarks.Enabled = true;
+                dataGridView1.SelectAll();
+                dataGridView1.ClearSelection();
+
                 if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
             }
             catch (Exception) { }
@@ -78,8 +83,30 @@ namespace TF2_Demo_Tool
                 DataGridResources = getDataFromDemo(FilePathsDem[i]);
                 dataGridView1.Rows.Add(nameofFile, DataGridResources.MapName, DataGridResources.Ticks, DataGridResources.PlayerName, DataGridResources.ServerName, FilePathsDem[i]);
             }
-            ButtonRemoveEmpty.Enabled = true;
-            ButtonMoveBookmarksToNewFolder.Enabled = true;
+
+            if (FilePathsDem.Count() > 0)
+            {
+                ButtonMoveBookmarksToNewFolder.Enabled = true;
+                buttonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarks.Enabled = true;
+
+                buttonSelectAll.Enabled = true;
+                buttonSelectBookmarked.Enabled = true;
+                buttonSelectEmpty.Enabled = true;
+                buttonSelectNone.Enabled = true;
+            }
+            if (FilePathsDem.Count() == 0)
+            {
+                ButtonMoveBookmarksToNewFolder.Enabled = false;
+                buttonRemoveEmpty.Enabled = false;
+                ButtonMoveBookmarks.Enabled = false;
+
+                buttonSelectAll.Enabled = false;
+                buttonSelectBookmarked.Enabled = false;
+                buttonSelectEmpty.Enabled = false;
+                buttonSelectNone.Enabled = false; 
+            }
+
             richTextBox1.Text = null;
         }
         
@@ -98,16 +125,15 @@ namespace TF2_Demo_Tool
 
         private void ButtonChooseFolder_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose a folder where your demo files are";
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            var sfd = new SaveFileDialog();
+            sfd.FileName = "Choose folder with Valve demos";
+            sfd.Title = "Choose folder with Valve demos";
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
             {
-                PathDemoFiles = fbd.SelectedPath;
+                PathDemoFiles = Path.GetDirectoryName(sfd.FileName);
                 Import(PathDemoFiles);
-                ButtonRemoveEmpty.Enabled = true;
                 if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
-                ButtonMoveBookmarksToNewFolder.Enabled = true;
             }
         }
 
@@ -211,12 +237,13 @@ namespace TF2_Demo_Tool
 
         private void ButtonMoveBookmarksToNewFolder_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose a folder where you want to move demo files with some events on them";
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            var sfd = new SaveFileDialog();
+            sfd.FileName = "Choose a folder where you want to move demo files with some events on them";
+            sfd.Title = "Choose a folder where you want to move demo files with some events on them";
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
             {
-                PathMoveTo = fbd.SelectedPath + @"\";
+                PathMoveTo = Path.GetDirectoryName(sfd.FileName) + @"\";
                 for (int i = 0; i < FilePathsDem.Length; i++)
                 {
                     string nameofFile = FilePathsDem[i].Split(new string[] { splitter }, StringSplitOptions.None)[1].Split('.')[0];
@@ -260,15 +287,18 @@ namespace TF2_Demo_Tool
 
         private void DemoFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose a default folder where your demo files are";
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            var sfd = new SaveFileDialog();
+            sfd.FileName = "Choose default folder with Valve demos";
+            sfd.Title = "Choose default folder with Valve demos";
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
             {
-                PathDemoFiles = fbd.SelectedPath;
+                PathDemoFiles = Path.GetDirectoryName(sfd.FileName);
                 BackupFolder(PathDemoFiles, "FolderDemos");
                 Import(PathDemoFiles);
-                ButtonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarksToNewFolder.Enabled = true;
+                buttonRemoveEmpty.Enabled = true;
+                ButtonMoveBookmarks.Enabled = true;
                 if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
                 ButtonMoveBookmarksToNewFolder.Enabled = true;
                 MessageBox.Show("Default folder with your demo files was saved and they will be automatically imported at the start");
@@ -277,16 +307,17 @@ namespace TF2_Demo_Tool
 
         private void MNoveToStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose a default folder where you want to move demo files with some events on them";
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            var sfd = new SaveFileDialog();
+            sfd.FileName = "Choose a default folder where you want to move demo files";
+            sfd.Title = "Choose a default folder where you want to move demo file";
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
             {
-                PathMoveToBackup = fbd.SelectedPath + @"\";
+                PathMoveToBackup = Path.GetDirectoryName(sfd.FileName) + @"\";
                 BackupFolder(PathMoveToBackup, "FolderMoveTo");
                 if (dataGridView1.Rows.Count > 0)
                 {
-                    ButtonMoveBookmarks.Enabled = true; 
+                    ButtonMoveBookmarks.Enabled = true;
                 }
                 Hermuth = true;
                 MessageBox.Show("Default folder for moving the demo files was saved");
@@ -310,16 +341,6 @@ namespace TF2_Demo_Tool
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form frm = new Form();
-            frm.Text = "About";
-            frm.Size = new Size(350, 100);
-            frm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            RichTextBox rtx = new RichTextBox();
-            rtx.Text = Environment.NewLine + "Author: Stepanex" + Environment.NewLine + "Email: stepanex@gmx.com" + Environment.NewLine + "GitHub: https://github.com/stepanex/TF2-Demo-Tool/releases";
-            rtx.Dock = DockStyle.Fill;
-            rtx.ReadOnly = true;
-            frm.Controls.Add(rtx);
-            frm.Show();
         }
 
         private class DemoResources
@@ -359,6 +380,18 @@ namespace TF2_Demo_Tool
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                buttonRemoveSelected.Enabled = true;
+                buttonMoveSelected.Enabled = true;
+                buttonMoveSelectedSavedFolder.Enabled = true;
+            }
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                buttonRemoveSelected.Enabled = false;
+                buttonMoveSelected.Enabled = false;
+                buttonMoveSelectedSavedFolder.Enabled = false;
+            }
             string nameofFile = "";
             try
             {
@@ -420,5 +453,210 @@ namespace TF2_Demo_Tool
             }
 
         }
+
+        private void buttonSelectEmpty_Click(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection();
+            for (int i = 0; i < FilePathsDem.Length; i++)
+            {
+                string nameofFile = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                TextInJson = "Stuff just to be sure";
+                try
+                {
+                    TextInJson = File.ReadAllText(splitter + nameofFile + ".json");
+                    string test = TextInJson.Split('"')[3];
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        TextInJson = File.ReadAllText(splitter + nameofFile + ".txt");
+                        if (TextInJson == "")
+                        {
+                        dataGridView1.Rows[i].Selected = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        dataGridView1.Rows[i].Selected = true;
+                    }
+                }
+            }
+        }
+        List<string> selected = new List<string>();
+        private void buttonRemoveSelected_Click(object sender, EventArgs e)
+        {
+            selected.Clear();
+           DialogResult result = MessageBox.Show("Do you really want to delete all selected demo files?", "Important Question", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                for (int i = 0; i < FilePathsDem.Length; i++)
+                {
+                    if (dataGridView1.Rows[i].Selected == true)
+                    {
+                        string nameofFile = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                        selected.Add(nameofFile);
+                        Number++;
+                    }
+                }
+                do
+                {
+                    string nameofFile = selected.First();
+                    selected.Remove(nameofFile);
+                    File.Delete(splitter + nameofFile + ".dem");
+                    File.Delete(splitter + nameofFile + ".txt");
+                    File.Delete(splitter + nameofFile + ".json");
+                    File.Delete(splitter + nameofFile + ".jpg");
+                    File.Delete(splitter + nameofFile + ".tga");
+                } while (selected.Count>0);
+                MessageBox.Show(Number.ToString() + " files were successfully removed");
+                Number = 0;
+                Import(PathDemoFiles);
+                dataGridView1.ClearSelection();
+            }
+        }
+
+        private void buttonSelectBookmarked_Click(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection();
+                for (int i = 0; i < FilePathsDem.Length; i++)
+                {
+                    string nameofFile = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                    TextInJson = "";
+                    try
+                    {
+                        TextInJson = File.ReadAllText(splitter + nameofFile + ".json");
+                        string[] splitted = TextInJson.Split('"');
+
+                        if (splitted.Length > 3)
+                        {
+                            dataGridView1.Rows[i].Selected = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+            }
+        }
+
+        private void buttonMoveSelected_Click(object sender, EventArgs e)
+        {
+            selected.Clear();
+            var sfd = new SaveFileDialog();
+            sfd.Title = "Choose a folder where you want to move selected demo files";
+            sfd.Title = "Choose a folder where you want to move selected demo files";
+            DialogResult result = sfd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
+            {
+                PathMoveTo = Path.GetDirectoryName(sfd.FileName) + @"\";
+                for (int i = 0; i < FilePathsDem.Length; i++)
+                {
+                    if (dataGridView1.Rows[i].Selected == true)
+                    {
+                        string nameofFile = dataGridView1.Rows[i].Cells[0].Value.ToString();
+
+                        File.Move(splitter + nameofFile + ".dem", PathMoveTo + nameofFile + ".dem");
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".json", PathMoveTo + nameofFile + ".json");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".txt", PathMoveTo + nameofFile + ".txt");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".tga", PathMoveTo + nameofFile + ".tga");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".jpg", PathMoveTo + nameofFile + ".jpg");
+                        }
+                        catch (Exception) { }
+                        Number++;
+                    } 
+                }
+            }
+            MessageBox.Show(Number.ToString() + " demo files were successfully moved");
+            Import(PathDemoFiles);
+            Number = 0;
+        }
+
+        private void buttonSelectAll_Click(object sender, EventArgs e)
+        {
+            dataGridView1.SelectAll();
+        }
+
+        private void buttonSelectNone_Click(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection();
+        }
+
+        private void aboutAutorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form frm = new Form();
+            frm.Text = "About";
+            frm.Size = new Size(350, 100);
+            frm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Label lbl = new Label();
+            RichTextBox rtx = new RichTextBox();
+            rtx.Text = "Author: Stepanex" + Environment.NewLine + "Email: stepanex@gmx.com" + Environment.NewLine + "GitHub: https://github.com/stepanex/TF2-Demo-Tool/releases";
+            rtx.Dock = DockStyle.Fill;
+            rtx.ReadOnly = true;
+            rtx.TabIndex = 50;
+            frm.Controls.Add(rtx);
+            frm.Show();
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            Import(PathDemoFiles);
+            if (Hermuth == true) { ButtonMoveBookmarks.Enabled = true; }
+        }
+
+        private void buttonMoveSelectedSavedFolder_Click(object sender, EventArgs e)
+        {
+            if (PathMoveToBackup != null)
+            {
+                selected.Clear();
+                for (int i = 0; i < FilePathsDem.Length; i++)
+                {
+                    if (dataGridView1.Rows[i].Selected == true)
+                    {
+                        string nameofFile = dataGridView1.Rows[i].Cells[0].Value.ToString();
+
+                        File.Move(splitter + nameofFile + ".dem", PathMoveToBackup + nameofFile + ".dem");
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".json", PathMoveToBackup + nameofFile + ".json");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".txt", PathMoveToBackup + nameofFile + ".txt");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".tga", PathMoveToBackup + nameofFile + ".tga");
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                            File.Move(splitter + nameofFile + ".jpg", PathMoveToBackup + nameofFile + ".jpg");
+                        }
+                        catch (Exception) { }
+                        Number++;
+                    }
+                }
+                MessageBox.Show(Number.ToString() + " demo files were successfully moved");
+                Import(PathDemoFiles);
+                Number = 0;
+            }
+            else MessageBox.Show("You have not saved any 'move-to' folder, you can do so by clicking on 'File' and then 'Choose default 'move to' folder'");
+        }
     }
-}
+ }

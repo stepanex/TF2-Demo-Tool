@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ButtonChooseFolder = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.ButtonRemoveEmpty = new System.Windows.Forms.Button();
             this.ButtonMoveBookmarks = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.profileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +48,16 @@
             this.ColumnPlayerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnServerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFilePathDem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonSelectEmpty = new System.Windows.Forms.Button();
+            this.buttonRemoveSelected = new System.Windows.Forms.Button();
+            this.buttonSelectBookmarked = new System.Windows.Forms.Button();
+            this.buttonMoveSelected = new System.Windows.Forms.Button();
+            this.buttonRemoveEmpty = new System.Windows.Forms.Button();
+            this.buttonMoveSelectedSavedFolder = new System.Windows.Forms.Button();
+            this.buttonSelectNone = new System.Windows.Forms.Button();
+            this.buttonSelectAll = new System.Windows.Forms.Button();
+            this.aboutAutorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -56,9 +65,9 @@
             // ButtonChooseFolder
             // 
             this.ButtonChooseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonChooseFolder.Location = new System.Drawing.Point(556, 358);
+            this.ButtonChooseFolder.Location = new System.Drawing.Point(556, 193);
             this.ButtonChooseFolder.Name = "ButtonChooseFolder";
-            this.ButtonChooseFolder.Size = new System.Drawing.Size(214, 23);
+            this.ButtonChooseFolder.Size = new System.Drawing.Size(214, 30);
             this.ButtonChooseFolder.TabIndex = 2;
             this.ButtonChooseFolder.Text = "Choose folder with demos";
             this.ButtonChooseFolder.UseVisualStyleBackColor = true;
@@ -72,27 +81,15 @@
             this.richTextBox1.Location = new System.Drawing.Point(12, 193);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(538, 322);
+            this.richTextBox1.Size = new System.Drawing.Size(538, 385);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
-            // 
-            // ButtonRemoveEmpty
-            // 
-            this.ButtonRemoveEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonRemoveEmpty.Enabled = false;
-            this.ButtonRemoveEmpty.Location = new System.Drawing.Point(556, 431);
-            this.ButtonRemoveEmpty.Name = "ButtonRemoveEmpty";
-            this.ButtonRemoveEmpty.Size = new System.Drawing.Size(214, 23);
-            this.ButtonRemoveEmpty.TabIndex = 5;
-            this.ButtonRemoveEmpty.Text = "Remove empty demos";
-            this.ButtonRemoveEmpty.UseVisualStyleBackColor = true;
-            this.ButtonRemoveEmpty.Click += new System.EventHandler(this.ButtonRemoveEmpty_Click);
             // 
             // ButtonMoveBookmarks
             // 
             this.ButtonMoveBookmarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonMoveBookmarks.Enabled = false;
-            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(556, 460);
+            this.ButtonMoveBookmarks.Location = new System.Drawing.Point(556, 531);
             this.ButtonMoveBookmarks.Name = "ButtonMoveBookmarks";
             this.ButtonMoveBookmarks.Size = new System.Drawing.Size(214, 23);
             this.ButtonMoveBookmarks.TabIndex = 6;
@@ -158,6 +155,8 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutAutorToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
@@ -167,7 +166,7 @@
             // 
             this.ButtonMoveBookmarksToNewFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonMoveBookmarksToNewFolder.Enabled = false;
-            this.ButtonMoveBookmarksToNewFolder.Location = new System.Drawing.Point(556, 489);
+            this.ButtonMoveBookmarksToNewFolder.Location = new System.Drawing.Point(556, 560);
             this.ButtonMoveBookmarksToNewFolder.Name = "ButtonMoveBookmarksToNewFolder";
             this.ButtonMoveBookmarksToNewFolder.Size = new System.Drawing.Size(214, 23);
             this.ButtonMoveBookmarksToNewFolder.TabIndex = 8;
@@ -242,23 +241,145 @@
             this.ColumnFilePathDem.ReadOnly = true;
             this.ColumnFilePathDem.Visible = false;
             // 
+            // buttonSelectEmpty
+            // 
+            this.buttonSelectEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectEmpty.Enabled = false;
+            this.buttonSelectEmpty.Location = new System.Drawing.Point(556, 329);
+            this.buttonSelectEmpty.Name = "buttonSelectEmpty";
+            this.buttonSelectEmpty.Size = new System.Drawing.Size(214, 23);
+            this.buttonSelectEmpty.TabIndex = 10;
+            this.buttonSelectEmpty.Text = "Select empty demos";
+            this.buttonSelectEmpty.UseVisualStyleBackColor = true;
+            this.buttonSelectEmpty.Click += new System.EventHandler(this.buttonSelectEmpty_Click);
+            // 
+            // buttonRemoveSelected
+            // 
+            this.buttonRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRemoveSelected.Enabled = false;
+            this.buttonRemoveSelected.Location = new System.Drawing.Point(556, 401);
+            this.buttonRemoveSelected.Name = "buttonRemoveSelected";
+            this.buttonRemoveSelected.Size = new System.Drawing.Size(214, 23);
+            this.buttonRemoveSelected.TabIndex = 11;
+            this.buttonRemoveSelected.Text = "Remove selected";
+            this.buttonRemoveSelected.UseVisualStyleBackColor = true;
+            this.buttonRemoveSelected.Click += new System.EventHandler(this.buttonRemoveSelected_Click);
+            // 
+            // buttonSelectBookmarked
+            // 
+            this.buttonSelectBookmarked.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectBookmarked.Enabled = false;
+            this.buttonSelectBookmarked.Location = new System.Drawing.Point(556, 358);
+            this.buttonSelectBookmarked.Name = "buttonSelectBookmarked";
+            this.buttonSelectBookmarked.Size = new System.Drawing.Size(214, 23);
+            this.buttonSelectBookmarked.TabIndex = 12;
+            this.buttonSelectBookmarked.Text = "Select bookmarked demos";
+            this.buttonSelectBookmarked.UseVisualStyleBackColor = true;
+            this.buttonSelectBookmarked.Click += new System.EventHandler(this.buttonSelectBookmarked_Click);
+            // 
+            // buttonMoveSelected
+            // 
+            this.buttonMoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonMoveSelected.Enabled = false;
+            this.buttonMoveSelected.Location = new System.Drawing.Point(556, 430);
+            this.buttonMoveSelected.Name = "buttonMoveSelected";
+            this.buttonMoveSelected.Size = new System.Drawing.Size(214, 23);
+            this.buttonMoveSelected.TabIndex = 13;
+            this.buttonMoveSelected.Text = "Move selected";
+            this.buttonMoveSelected.UseVisualStyleBackColor = true;
+            this.buttonMoveSelected.Click += new System.EventHandler(this.buttonMoveSelected_Click);
+            // 
+            // buttonRemoveEmpty
+            // 
+            this.buttonRemoveEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRemoveEmpty.Enabled = false;
+            this.buttonRemoveEmpty.Location = new System.Drawing.Point(556, 502);
+            this.buttonRemoveEmpty.Name = "buttonRemoveEmpty";
+            this.buttonRemoveEmpty.Size = new System.Drawing.Size(214, 23);
+            this.buttonRemoveEmpty.TabIndex = 14;
+            this.buttonRemoveEmpty.Text = "Remove empty demos";
+            this.buttonRemoveEmpty.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmpty.Click += new System.EventHandler(this.ButtonRemoveEmpty_Click);
+            // 
+            // buttonMoveSelectedSavedFolder
+            // 
+            this.buttonMoveSelectedSavedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonMoveSelectedSavedFolder.Enabled = false;
+            this.buttonMoveSelectedSavedFolder.Location = new System.Drawing.Point(556, 459);
+            this.buttonMoveSelectedSavedFolder.Name = "buttonMoveSelectedSavedFolder";
+            this.buttonMoveSelectedSavedFolder.Size = new System.Drawing.Size(214, 23);
+            this.buttonMoveSelectedSavedFolder.TabIndex = 15;
+            this.buttonMoveSelectedSavedFolder.Text = "Move selected to saved folder";
+            this.buttonMoveSelectedSavedFolder.UseVisualStyleBackColor = true;
+            this.buttonMoveSelectedSavedFolder.Click += new System.EventHandler(this.buttonMoveSelectedSavedFolder_Click);
+            // 
+            // buttonSelectNone
+            // 
+            this.buttonSelectNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectNone.Enabled = false;
+            this.buttonSelectNone.Location = new System.Drawing.Point(556, 300);
+            this.buttonSelectNone.Name = "buttonSelectNone";
+            this.buttonSelectNone.Size = new System.Drawing.Size(214, 23);
+            this.buttonSelectNone.TabIndex = 16;
+            this.buttonSelectNone.Text = "Select none";
+            this.buttonSelectNone.UseVisualStyleBackColor = true;
+            this.buttonSelectNone.Click += new System.EventHandler(this.buttonSelectNone_Click);
+            // 
+            // buttonSelectAll
+            // 
+            this.buttonSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectAll.Enabled = false;
+            this.buttonSelectAll.Location = new System.Drawing.Point(556, 271);
+            this.buttonSelectAll.Name = "buttonSelectAll";
+            this.buttonSelectAll.Size = new System.Drawing.Size(214, 23);
+            this.buttonSelectAll.TabIndex = 17;
+            this.buttonSelectAll.Text = "Select all";
+            this.buttonSelectAll.UseVisualStyleBackColor = true;
+            this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
+            // 
+            // aboutAutorToolStripMenuItem
+            // 
+            this.aboutAutorToolStripMenuItem.Name = "aboutAutorToolStripMenuItem";
+            this.aboutAutorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutAutorToolStripMenuItem.Text = "About autor";
+            this.aboutAutorToolStripMenuItem.Click += new System.EventHandler(this.aboutAutorToolStripMenuItem_Click);
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRefresh.Location = new System.Drawing.Point(556, 229);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(214, 23);
+            this.buttonRefresh.TabIndex = 18;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 526);
+            this.ClientSize = new System.Drawing.Size(796, 589);
+            this.Controls.Add(this.buttonRefresh);
+            this.Controls.Add(this.buttonSelectAll);
+            this.Controls.Add(this.buttonSelectNone);
+            this.Controls.Add(this.buttonMoveSelectedSavedFolder);
+            this.Controls.Add(this.buttonRemoveEmpty);
+            this.Controls.Add(this.buttonMoveSelected);
+            this.Controls.Add(this.buttonSelectBookmarked);
+            this.Controls.Add(this.buttonRemoveSelected);
+            this.Controls.Add(this.buttonSelectEmpty);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.ButtonMoveBookmarksToNewFolder);
             this.Controls.Add(this.ButtonMoveBookmarks);
-            this.Controls.Add(this.ButtonRemoveEmpty);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.ButtonChooseFolder);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(380, 397);
+            this.MinimumSize = new System.Drawing.Size(380, 620);
             this.Name = "Form1";
-            this.Text = "Stepanex\'s tool to organize demos v3.0.0";
+            this.Text = "Stepanex\'s tool to organize demos v4.0.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -271,7 +392,6 @@
         #endregion
         private System.Windows.Forms.Button ButtonChooseFolder;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button ButtonRemoveEmpty;
         private System.Windows.Forms.Button ButtonMoveBookmarks;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem profileToolStripMenuItem;
@@ -289,6 +409,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPlayerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnServerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFilePathDem;
+        private System.Windows.Forms.Button buttonSelectEmpty;
+        private System.Windows.Forms.Button buttonRemoveSelected;
+        private System.Windows.Forms.Button buttonSelectBookmarked;
+        private System.Windows.Forms.Button buttonMoveSelected;
+        private System.Windows.Forms.Button buttonRemoveEmpty;
+        private System.Windows.Forms.Button buttonMoveSelectedSavedFolder;
+        private System.Windows.Forms.Button buttonSelectNone;
+        private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.ToolStripMenuItem aboutAutorToolStripMenuItem;
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }
 
