@@ -3,7 +3,8 @@ Tool for organizing TF2 demo files
 
 Install instructions:
 
-    Either go to [releases](https://github.com/stepanex/TF2-Demo-Tool/releases) and download last release or download [exe](https://github.com/stepanex/TF2-Demo-Tool/tree/master/exe) folder and unzip it anywhere you want to.
+    Either go to [releases](https://github.com/stepanex/TF2-Demo-Tool/releases) and download last release
+    or download [exe](https://github.com/stepanex/TF2-Demo-Tool/tree/master/exe) folder and unzip it anywhere you want to.
 
 With this tool you can:
 
